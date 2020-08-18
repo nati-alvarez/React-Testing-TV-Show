@@ -1,5 +1,5 @@
 import React from "react";
-import {render, fireEvent, waitFor, wait} from "@testing-library/react";
+import {render, waitFor} from "@testing-library/react";
 import fetchShow from "./api/fetchShow";
 import App from "./App";
 
@@ -22,16 +22,18 @@ test("App recieves show data from api", async ()=>{
     expect(getByText("Fetching data...")).toBeInTheDocument();
     
     //show data filled out and loading message gone when API call is successful
-    await waitFor(()=> expect(getByText("Show show")).toBeInTheDocument());
-    expect(queryByText("Fetching data...")).not.toBeInTheDocument();
+    await waitFor(()=> {
+        expect(getByText("Show show")).toBeInTheDocument();
+        expect(queryByText("Fetching data...")).not.toBeInTheDocument();
+    });
 })
 
 
-test("Checks that app shows loading message when show is empty", ()=>{
+test("Checks that app shows loading message when show is empty", async ()=>{
     fetchShow.mockResolvedValueOnce(null);
 
     expect(fetchShow).toHaveBeenCalledTimes(1);
 
     const {getByText} = render(<App/>);
-    expect(getByText("Fetching data...")).toBeInTheDocument();
+    await waitFor(()=> expect(getByText("Fetching data...")).toBeInTheDocument());
 });
