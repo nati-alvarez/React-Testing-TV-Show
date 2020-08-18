@@ -49,6 +49,7 @@ export default function App() {
       <Dropdown
         options={["Stranger Things", "Euphoria", "Agents of S.H.I.E.L.D", "On My Block", "The Umbrella Academy", "Black Mirror"]}
         onChange={selectShow}
+        value={show.name || "Select a show"}
         placeholder="Select a show"
       />
       <img className="poster-img" src={show.image.original} alt={show.name} />
