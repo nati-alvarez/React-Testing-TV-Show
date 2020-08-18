@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "react-dropdown";
 import parse from "html-react-parser";
+import axios from "axios";
 
 import { formatSeasons } from "./utils/formatSeasons";
 
@@ -26,12 +27,30 @@ export default function App() {
     setSelectedSeason(e.value);
   };
 
+  const selectShow = e => {
+    console.log(e.value)
+    axios.get(
+      `https://api.tvmaze.com/singlesearch/shows?q=${e.value}&embed=episodes`
+    ).then(({data})=>{
+      setShow(data);
+      console.log(data._embedded)
+      setSeasons(formatSeasons(data._embedded.episodes))
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
+
   if (!show) {
     return <h2>Fetching data...</h2>;
   }
 
   return (
     <div className="App">
+      <Dropdown
+        options={["Stranger Things", "Euphoria", "Agents of S.H.I.E.L.D", "On My Block", "The Umbrella Academy", "Black Mirror"]}
+        onChange={selectShow}
+        placeholder="Select a show"
+      />
       <img className="poster-img" src={show.image.original} alt={show.name} />
       <h1>{show.name}</h1>
       {parse(show.summary)}
