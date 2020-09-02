@@ -23,7 +23,7 @@ test("App recieves show data from api", async ()=>{
     
     //show data filled out and loading message gone when API call is successful
     await waitFor(()=> {
-        expect(getByText("Show show")).toBeInTheDocument();
+        expect(getByText("blah blabh blabasd balah blah")).toBeInTheDocument();
         expect(queryByText("Fetching data...")).not.toBeInTheDocument();
     });
 })
